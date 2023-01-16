@@ -23,6 +23,8 @@ function qrCreate(){
 function connect(){
 	// 入力されたロボットのIPアドレスを取得
 	var pepperIp = $("#pepperIP").val();
+	alert( 'http://' + pepperIp + '/apps/nao_destruction_program/' )
+	window.open('http://' + pepperIp + '/apps/nao_destruction_program/', '_blank');
 
 	// 接続が成功したら、各種プロキシを作成して代入しておく
     var setupIns_ = function(){
