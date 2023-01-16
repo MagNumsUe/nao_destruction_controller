@@ -1,0 +1,178 @@
+<html>
+<head>
+    <title>NAOによるディストラクションプログラム</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/uikit.min.css" />
+    <script src="libs/qimessaging/1.0/qimessaging.js"></script>
+    <script src="libs/qimessaging/1.0/jquery.min.js"></script>
+    <script src="js/uikit.min.js"></script>
+    <script src="js/uikit-icons.min.js"></script>
+    <script src="js/control.js"></script>
+
+</head>
+<body>
+    <div class="uk-container uk-container-center uk-container-small uk-margin-top uk-margin-bottom">
+        <h3>　　</h3>
+        <div class="uk-margin-top uk-margin-bottom">
+            <h2 class="uk-heading-line uk-text-right"><span>NAOによるディストラクションプログラム</span></h1>
+        </div>
+        <div class="uk-margin-bottom"><label>　　　</label></div>
+
+        <button class="uk-button uk-button-default uk-button-large" type="button" uk-toggle="target: #toggle-animation-multiple-1; animation:  uk-animation-slide-left, uk-animation-slide-bottom">NAOの接続・設定</button>
+        <button class="uk-button uk-button-default uk-button-large" type="button" uk-toggle="target: #toggle-animation-multiple-2; animation:  uk-animation-slide-left, uk-animation-slide-bottom">停止・しゃべる</button>
+        <button class="uk-button uk-button-default uk-button-large" type="button" uk-toggle="target: #toggle-animation-multiple-3; animation:  uk-animation-slide-left, uk-animation-slide-bottom">声かけ</button>
+        <div><label>　　　</label></div>
+        <div id="toggle-animation-multiple-1" hidden class="uk-child-width-1-1@m uk-grid-small uk-margin-bottom" uk-grid>
+            <div>
+                <div class="uk-card uk-card-default uk-card-body uk-card-hover">
+                    <div class="uk-grid">
+                        <div class="uk-width-auto@m uk-margin-medium-bottom">
+                            <h3>接続</h3>
+                            <div class = "uk-flex">
+                                <div class="col-xs-12 uk-margin-right"><label>NAO's インターネットアドレス</label></div>
+                                <div class = "connectedState"><div class="connected" style="color:red"><span class="connectedText">未接続</span><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></div></div>
+                            </div>
+                            <div class = "uk-flex">
+                                <input type="text" class="uk-input uk-form-width-medium uk-form-large" placeholder="ex)192.168.xxx.xxx" id="pepperIP" value="" />
+                                <button onclick="connect()" class="uk-button uk-button-secondary uk-button-large">接　続</button>
+                            </div>
+                            <label><div class="uk-text-baseline uk-text-success uk-margin-small-top uk-text-small">※NAOと同じネットワークに接続してください</div></label>
+                            <label><div class="uk-text-baseline uk-text-success uk-margin-small-top uk-text-small">※NAOの胸のボタンを１回押すとアドレスをしゃべります</div></label>
+                        </div>
+                        <div class="uk-width-expand@m">
+                            
+                        </div>
+                        <div class="uk-width-2-5@m uk-margin-medium-bottom">
+                            <h3>音量</h3>
+                            <label>今の音量</label>
+                            <div class = "uk-flex">
+                                <input type="text" class="uk-input uk-width-small uk-form-large" id="pepperVolume" value="waiting..." />
+                                <button onclick="changeAudioVolume()" class="uk-button uk-button-secondary uk-button-large">変更</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="uk-grid">
+                        <div class="uk-width-1-3@m uk-margin-medium-bottom">
+                            <h3 class="uk-margin-bottom">自律</h3>
+                            <div class="uk-flex">
+                                <button onclick="autonomousSwitch(true)" class="uk-button uk-button-secondary uk-button-large uk-margin-right">オン</button>
+                                <button onclick="autonomousSwitch(false)" class="uk-button uk-button-secondary uk-button-large">オフ</button>
+                            </div>
+                            <label><div class="uk-text-baseline uk-text-success uk-margin-small-top uk-text-small">※目が青く反応するときは、自律がオンの状態</div></label>
+                            <label><div class="uk-text-baseline uk-text-warning uk-margin-small-top uk-text-small">※自律がプログラムの動作を邪魔をする場合は、自律をオフ → 手動起動</div></label>
+                        </div>
+                        <div class="uk-width-expand@m">
+                            
+                        </div>
+                        <div class="uk-width-1-3@m uk-margin-bottom">
+                            <h3>プログラムの手動起動</h3>
+                            <div class="uk-button-group uk-flex">
+                                <button onclick="action(1)" class="uk-button uk-button-secondary uk-button-large uk-margin-right">開始</button>
+                                <button onclick="action(0)" class="uk-button uk-button-secondary uk-button-large">終了</button>
+                            </div>
+                            <label><div class="uk-text-baseline uk-text-success uk-margin-small-top uk-text-small">※自律がオンの時は声かけで起動　　　声かけ「ディストラクション」</div></label>
+                            <label><div class="uk-text-baseline uk-text-warning uk-margin-small-top uk-text-small">※声かけでプログラムが反応しない場合はボタンから開始</div></label>
+                        </div>
+                    </div>
+                    <div class="uk-grid uk-margin-bottom">
+                        <div class="uk-width-1-3@m uk-margin-medium-bottom">
+                            <h3>姿勢</h3>
+                            <div class="uk-flex">
+                                <button onclick="sittingSwitch(false)" class="uk-button uk-button-secondary uk-button-large uk-margin-right">立つ</button>
+                                <button onclick="sittingSwitch(true)" class="uk-button uk-button-secondary uk-button-large">座る</button>
+                            </div>  
+                        </div>
+                        <div class="uk-width-expand@m">
+                            
+                        </div>
+                        <div class="uk-width-1-3@m uk-margin-bottom">
+                            <h3>休憩</h3>
+                            <div class="uk-flex">
+                                <button onclick="sleepSwitch(true)" class="uk-button uk-button-secondary uk-button-large uk-margin-right">動く</button>
+                                <button onclick="sleepSwitch(false)" class="uk-button uk-button-secondary uk-button-large">休む</button>
+                            </div>  
+                            <label><div class="uk-text-baseline uk-text-success uk-margin-small-top uk-text-small">※NAOを長時間使用しない場合は休ませてください</div></label>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="toggle-animation-multiple-2" hidden class="uk-child-width-1-1@m uk-grid-small uk-margin-bottom" uk-grid>
+            <div>
+                <div class="uk-card uk-card-default uk-card-body uk-card-hover">
+                    <div class="uk-grid">
+                        <div class="uk-width-expand@m uk-margin-medium-bottom">
+                            <h3>しゃべる</h3>
+                            <div class="uk-flex">
+                                <button onclick="animatedSay()" class="uk-button uk-button-secondary uk-button-large">話す</button>
+                                <input type="text" class="uk-input uk-width-3-4 uk-form-large" id="animatedSayText" />
+                            </div>
+                        </div>
+                        <div class="uk-width-1-3@m uk-margin-bottom">
+                            <h3>動作の停止</h3>
+                            <div class = "uk-flex">
+                                <button onclick="contents_stop()" class="uk-button uk-button-danger uk-button-large uk-margin-right">停　止</button>
+                            </div>
+                            <label><div class="uk-text-baseline uk-text-success uk-margin-small-top uk-text-small">※歌は急に停止できません</div></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="toggle-animation-multiple-3" hidden class="uk-child-width-1-1@m uk-grid-small uk-grid-match uk-margin-bottom" uk-grid>
+            <div>
+                <div class="uk-card uk-card-default uk-card-body uk-card-hover">
+                    <div class = "uk-flex">
+                        <h3 class="">声かけ　</h3><div class="uk-text-baseline uk-text-success uk-text-small uk-margin-small-top">※プログラムが起動中のみNAOから発話します</div>
+                    </div>
+                    <button onclick="say_8()" class="uk-button uk-button-default uk-button-large uk-margin-bottom uk-margin-right">いいね！</button>
+                    <button onclick="say_2()" class="uk-button uk-button-default uk-button-large uk-margin-bottom uk-margin-right">その調子！</button>
+                    <button onclick="say_1()" class="uk-button uk-button-default uk-button-large uk-margin-bottom uk-margin-right">かっこいい！</button>
+                    <button onclick="say_6()" class="uk-button uk-button-default uk-button-large uk-margin-bottom uk-margin-right">感動しちゃう</button>
+                    <button onclick="say_7()" class="uk-button uk-button-default uk-button-large uk-margin-bottom uk-margin-right">いい感じ</button>
+                    <button onclick="say_12()" class="uk-button uk-button-default uk-button-large uk-margin-bottom uk-margin-right">ステキだね</button>
+                    <button onclick="say_11()" class="uk-button uk-button-default uk-button-large uk-margin-bottom uk-margin-right">できちゃうね</button>
+                    <button onclick="say_4()" class="uk-button uk-button-default uk-button-large uk-margin-bottom uk-margin-right">応援しちゃう</button>
+                    <button onclick="say_3()" class="uk-button uk-button-default uk-button-large uk-margin-bottom uk-margin-right">すごい！</button>
+                    <button onclick="say_5()" class="uk-button uk-button-default uk-button-large uk-margin-bottom uk-margin-right">僕も嬉しい</button>
+                    <button onclick="say_9()" class="uk-button uk-button-default uk-button-large uk-margin-bottom uk-margin-right">もう一息だよ</button>
+                    <button onclick="say_10()" class="uk-button uk-button-default uk-button-large uk-margin-bottom uk-margin-right">もう一息 ×２</button>
+                </div>
+            </div>
+        </div>
+        <div class="uk-child-width-1-1 uk-grid-small uk-grid-match uk-margin-bottom" uk-grid>
+            <div>
+                <div uk-slider>
+                    <ul class="uk-slider-items uk-child-width-1-1@m uk-grid-match" uk-height-viewport="min-height: 100">
+                        <li>
+                            <div class="uk-card uk-card-default uk-card-body uk-card-hover">
+                                <h3>処置前</h3>
+                                <button onclick="contents_1()" class="uk-button uk-button-primary uk-button-large uk-margin-bottom uk-margin-right uk-width-1-1">処置前　</button>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="uk-card uk-card-default uk-card-body uk-card-hover">
+                                <h3>処置中</h3>
+                                <button onclick="contents_11()" class="uk-button uk-button-primary uk-button-large uk-margin-bottom uk-margin-right uk-width-1-1">処置中　</button>
+                                <button onclick="contents_16()" class="uk-button uk-button-danger uk-button-large uk-margin-bottom uk-margin-right uk-width-1-1">正　解！</button>
+                                <button onclick="contents_14()" class="uk-button uk-button-primary uk-button-large uk-margin-bottom uk-margin-right uk-width-1-1">深呼吸　</button>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="uk-card uk-card-default uk-card-body uk-card-hover">
+                                <h3>処置後</h3>
+                                <button onclick="contents_21()" class="uk-button uk-button-primary uk-button-large uk-margin-bottom uk-margin-right uk-width-1-1">処置後　</button>
+                                <button onclick="contents_23()" class="uk-button uk-button-primary uk-button-large uk-margin-bottom uk-margin-right uk-width-1-1">バイバイ</button>
+                            </div>
+                        </li>
+                    </ul>
+                    <a class="uk-position-center-left uk-position-small uk-hidden-hover" href="#" uk-slidenav-previous uk-slider-item="previous"></a>
+                    <a class="uk-position-center-right uk-position-small uk-hidden-hover" href="#" uk-slidenav-next uk-slider-item="next"></a>
+                </div>
+            </div>
+        </div>  
+    </div>
+</body>
+</html>
